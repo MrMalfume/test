@@ -6594,7 +6594,7 @@ function Library:CreateWindow(WindowInfo)
         local SearchIconButton = New("TextButton", {
             AnchorPoint = Vector2.new(1, 0.5),
             BackgroundColor3 = "MainColor",
-            Position = UDim2.new(1, -10, 0.5, 0),
+            Position = UDim2.new(1, -2, 0.5, 0),
             Size = UDim2.fromOffset(40, 40),
             Text = "",
             ZIndex = 2,
