@@ -6850,6 +6850,11 @@ function Library:CreateWindow(WindowInfo)
                 Parent = Tabs,
             })
 
+            New("UICorner", {
+                CornerRadius = UDim.new(0, 8),
+                Parent = TabButton,
+            })
+
             New("UIPadding", {
                 PaddingBottom = UDim.new(0, 11),
                 PaddingLeft = UDim.new(0, 12),
@@ -7401,40 +7406,13 @@ function Library:CreateWindow(WindowInfo)
             end
         end
 
-        -- Create curved indicator for active tab
-        local CurvedIndicator = New("Frame", {
-            AnchorPoint = Vector2.new(0, 0.5),
-            BackgroundColor3 = "AccentColor",
-            Position = UDim2.new(0, 8, 0.5, 0),
-            Size = UDim2.new(0, 6, 0, 20),
-            Visible = false,
-            Parent = TabButton,
-        })
-        
-        -- Create the curved corner effect
-        local Corner = New("UICorner", {
-            CornerRadius = UDim.new(0, 10),
-            Parent = CurvedIndicator,
-        })
-        
-        -- Ensure the indicator has proper curved appearance
-        CurvedIndicator.BackgroundColor3 = Library.Scheme.AccentColor
-
         function Tab:Show()
             if Library.ActiveTab then
                 Library.ActiveTab:Hide()
             end
 
-            -- Show curved indicator
-            CurvedIndicator.Visible = true
-            CurvedIndicator.BackgroundColor3 = Library.Scheme.AccentColor
-            TweenService:Create(CurvedIndicator, Library.TweenInfo, {
-                Size = UDim2.new(0, 8, 0, 16),
-                Position = UDim2.new(0, 6, 0.5, 0),
-            }):Play()
-            
             TweenService:Create(TabButton, Library.TweenInfo, {
-                BackgroundTransparency = 1,
+                BackgroundTransparency = 0,
             }):Play()
             TweenService:Create(TabLabel, Library.TweenInfo, {
                 TextTransparency = 0,
@@ -7458,12 +7436,6 @@ function Library:CreateWindow(WindowInfo)
         end
 
         function Tab:Hide()
-            -- Hide curved indicator
-            TweenService:Create(CurvedIndicator, Library.TweenInfo, {
-                Size = UDim2.new(0, 0, 0, 16),
-                Position = UDim2.new(0, 6, 0.5, 0),
-            }):Play()
-            
             TweenService:Create(TabButton, Library.TweenInfo, {
                 BackgroundTransparency = 1,
             }):Play()
@@ -7516,6 +7488,12 @@ function Library:CreateWindow(WindowInfo)
                 Text = "",
                 Parent = Tabs,
             })
+
+            New("UICorner", {
+                CornerRadius = UDim.new(0, 8),
+                Parent = TabButton,
+            })
+
             New("UIPadding", {
                 PaddingBottom = UDim.new(0, 11),
                 PaddingLeft = UDim.new(0, 12),
