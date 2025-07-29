@@ -6587,7 +6587,6 @@ function Library:CreateWindow(WindowInfo)
             Position = UDim2.fromScale(1, 0.5),
             Size = UDim2.fromOffset(40, 40),
             Text = "",
-            TextColor3 = "FontColor",
             ZIndex = 2,
             Parent = SearchContainer,
         })
@@ -6624,7 +6623,6 @@ function Library:CreateWindow(WindowInfo)
             Position = UDim2.fromScale(1, 0.5),
             Size = UDim2.fromOffset(0, 40),
             Text = "",
-            TextColor3 = "FontColor",
             TextScaled = true,
             TextXAlignment = Enum.TextXAlignment.Left,
             Visible = false,
@@ -6646,6 +6644,16 @@ function Library:CreateWindow(WindowInfo)
             Color = "OutlineColor",
             Parent = SearchBox,
         })
+
+        -- Set text colors directly to avoid theme system conflicts
+        SearchIconButton.TextColor3 = Library.Scheme.FontColor
+        SearchBox.TextColor3 = Library.Scheme.FontColor
+        
+        -- Register with theme system for proper color updates
+        Library.Registry[SearchIconButton] = Library.Registry[SearchIconButton] or {}
+        Library.Registry[SearchIconButton].TextColor3 = "FontColor"
+        Library.Registry[SearchBox] = Library.Registry[SearchBox] or {}
+        Library.Registry[SearchBox].TextColor3 = "FontColor"
 
         -- Animation variables
         local SearchExpanded = false
