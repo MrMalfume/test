@@ -6443,11 +6443,10 @@ function Library:CreateWindow(WindowInfo)
                     Position = UDim2.fromOffset(0, 48),
                     Size = UDim2.new(1, 0, 0, 1),
                 },
-                -- Removed vertical divider between sidebar and content
-                -- {
-                --     Position = UDim2.fromScale(0.3, 0),
-                --     Size = UDim2.new(0, 1, 1, -21),
-                -- },
+                {
+                    Position = UDim2.fromScale(0.25, 0),
+                    Size = UDim2.new(0, 1, 1, -21),
+                },
                 {
                     AnchorPoint = Vector2.new(0, 1),
                     Position = UDim2.new(0, 0, 1, -20),
@@ -6488,7 +6487,7 @@ function Library:CreateWindow(WindowInfo)
         --// Title
         local TitleHolder = New("Frame", {
             BackgroundTransparency = 1,
-            Size = UDim2.fromScale(0.3, 1),
+            Size = UDim2.fromScale(0.25, 1),
             Parent = TopBar,
         })
         New("UIListLayout", {
@@ -6525,8 +6524,8 @@ function Library:CreateWindow(WindowInfo)
         local RightWrapper = New("Frame", {
             BackgroundTransparency = 1,
             AnchorPoint = Vector2.new(0, 0.5),
-            Position = UDim2.new(0.3, 8, 0.5, 0),
-            Size = UDim2.new(0.7, -57, 1, -16),
+            Position = UDim2.new(0.25, 8, 0.5, 0),
+            Size = UDim2.new(0.75, -57, 1, -16),
             Parent = TopBar,
         })
 
@@ -6780,7 +6779,7 @@ function Library:CreateWindow(WindowInfo)
             CanvasSize = UDim2.fromScale(0, 0),
             Position = UDim2.fromOffset(0, 49),
             ScrollBarThickness = 0,
-            Size = UDim2.new(0.3, 0, 1, -70),
+            Size = UDim2.new(0.25, 0, 1, -70),
             Parent = MainFrame,
         })
 
@@ -6796,13 +6795,13 @@ function Library:CreateWindow(WindowInfo)
             end,
             Name = "Container",
             Position = UDim2.new(1, 0, 0, 49),
-            Size = UDim2.new(0.7, 0, 1, -70),
+            Size = UDim2.new(0.75, -1, 1, -70),
             Parent = MainFrame,
         })
 
         New("UIPadding", {
             PaddingBottom = UDim.new(0, 0),
-            PaddingLeft = UDim.new(0, 2),
+            PaddingLeft = UDim.new(0, 6),
             PaddingRight = UDim.new(0, 6),
             PaddingTop = UDim.new(0, 0),
             Parent = Container,
@@ -6899,7 +6898,7 @@ function Library:CreateWindow(WindowInfo)
                 Parent = TabContainer,
             })
             New("UIListLayout", {
-                Padding = UDim.new(0, 2),
+                Padding = UDim.new(0, 6),
                 Parent = TabLeft,
             })
             do
@@ -6928,7 +6927,7 @@ function Library:CreateWindow(WindowInfo)
                 Parent = TabContainer,
             })
             New("UIListLayout", {
-                Padding = UDim.new(0, 2),
+                Padding = UDim.new(0, 6),
                 Parent = TabRight,
             })
             do
