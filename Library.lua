@@ -6584,18 +6584,18 @@ function Library:CreateWindow(WindowInfo)
         -- Create search container for animation on TopBar (where move icon was)
         local SearchContainer = New("Frame", {
             BackgroundTransparency = 1,
-            Position = UDim2.new(1, -50, 0, 0),
+            Position = UDim2.new(1, -300, 0, 0),
             Size = UDim2.new(0, 300, 1, 0),
             Visible = not (WindowInfo.DisableSearch or false),
             Parent = TopBar,
         })
 
-        -- Create animated search icon button
+        -- Create animated search icon button (positioned exactly where move icon was)
         local SearchIconButton = New("TextButton", {
             AnchorPoint = Vector2.new(1, 0.5),
             BackgroundColor3 = "MainColor",
-            Position = UDim2.new(1, -0, 0.5, 0), -- Pushed further right (from -10 to 0)
-            Size = UDim2.fromOffset(40, 40),
+            Position = UDim2.new(1, -10, 0.5, 0),
+            Size = UDim2.fromOffset(28, 28),
             Text = "",
             ZIndex = 2,
             Parent = SearchContainer,
