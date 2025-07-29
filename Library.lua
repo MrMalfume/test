@@ -6473,6 +6473,11 @@ function Library:CreateWindow(WindowInfo)
         
         -- Store background image reference for controls
         Window.BackgroundImageLabel = BackgroundImageLabel
+        
+        -- Add a safe getter function for background image label
+        function Window:GetBackgroundImageLabel()
+            return self.BackgroundImageLabel
+        end
 
         if WindowInfo.Center then
             MainFrame.Position = UDim2.new(0.5, -MainFrame.Size.X.Offset / 2, 0.5, -MainFrame.Size.Y.Offset / 2)
@@ -7756,6 +7761,12 @@ function Library:CreateWindow(WindowInfo)
 
     --// Background Controls \\--
     function Window:AddBackgroundControls(SettingsTab)
+        -- Safety check to ensure background image label exists
+        if not self.BackgroundImageLabel then
+            warn("Background image label not found. Background controls may not work properly.")
+            return
+        end
+        
         -- Use existing settings tab or create one if not provided
         local TargetTab = SettingsTab or Window:AddTab("Settings", "settings")
         
@@ -7781,7 +7792,7 @@ function Library:CreateWindow(WindowInfo)
                     ["Christmas"] = "rbxassetid://11711560928",
                 }
                 
-                if Selected and Selected[1] then
+                if Selected and Selected[1] and Window.BackgroundImageLabel then
                     local SelectedName = BackgroundDropdown.Values[Selected[1]]
                     local ImageUrl = ImageMap[SelectedName]
                     if ImageUrl then
@@ -7798,7 +7809,9 @@ function Library:CreateWindow(WindowInfo)
             Min = 0,
             Max = 100,
             Callback = function(Value)
-                Window.BackgroundImageLabel.ImageTransparency = Value / 100
+                if Window.BackgroundImageLabel then
+                    Window.BackgroundImageLabel.ImageTransparency = Value / 100
+                end
             end
         })
         
@@ -7809,7 +7822,9 @@ function Library:CreateWindow(WindowInfo)
             Min = 50,
             Max = 200,
             Callback = function(Value)
-                Window.BackgroundImageLabel.TileSize = UDim2.fromOffset(Value, Value)
+                if Window.BackgroundImageLabel then
+                    Window.BackgroundImageLabel.TileSize = UDim2.fromOffset(Value, Value)
+                end
             end
         })
         
@@ -7818,7 +7833,7 @@ function Library:CreateWindow(WindowInfo)
             Text = "Custom Image ID",
             Placeholder = "Enter rbxassetid://",
             Callback = function(Value)
-                if Value and Value ~= "" then
+                if Value and Value ~= "" and Window.BackgroundImageLabel then
                     Window.BackgroundImageLabel.Image = Value
                 end
             end
