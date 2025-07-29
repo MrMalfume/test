@@ -257,6 +257,9 @@ local Templates = {
         Loader = false,
         LoaderIcon = nil,
         LoaderDuration = 4.5,
+        BackgroundImage = nil,
+        BackgroundImageTransparency = 0.75,
+        BackgroundTileSize = UDim2.fromOffset(100, 100),
     },
     Toggle = {
         Text = "Toggle",
@@ -6455,18 +6458,21 @@ function Library:CreateWindow(WindowInfo)
             Library:MakeOutline(MainFrame, WindowInfo.CornerRadius, 0)
         end
 
-        if WindowInfo.BackgroundImage then
-            New("ImageLabel", {
-                Image = WindowInfo.BackgroundImage,
-                Position = UDim2.fromScale(0, 0),
-                Size = UDim2.fromScale(1, 1),
-                ScaleType = Enum.ScaleType.Stretch,
-                ZIndex = 999,
-                BackgroundTransparency = 1,
-                ImageTransparency = 0.75,
-                Parent = MainFrame,
-            })
-        end
+        -- Background Image
+        local BackgroundImageLabel = New("ImageLabel", {
+            Image = WindowInfo.BackgroundImage or "",
+            Position = UDim2.fromScale(0, 0),
+            Size = UDim2.fromScale(1, 1),
+            ScaleType = Enum.ScaleType.Tile,
+            ZIndex = 999,
+            BackgroundTransparency = 1,
+            ImageTransparency = WindowInfo.BackgroundImageTransparency or 0.75,
+            TileSize = WindowInfo.BackgroundTileSize or UDim2.fromOffset(100, 100),
+            Parent = MainFrame,
+        })
+        
+        -- Store background image reference for controls
+        Window.BackgroundImageLabel = BackgroundImageLabel
 
         if WindowInfo.Center then
             MainFrame.Position = UDim2.new(0.5, -MainFrame.Size.X.Offset / 2, 0.5, -MainFrame.Size.Y.Offset / 2)
@@ -6593,7 +6599,7 @@ function Library:CreateWindow(WindowInfo)
             AnchorPoint = Vector2.new(1, 0.5),
             BackgroundColor3 = "MainColor",
             Position = UDim2.new(1, -10, 0.5, 0),
-            Size = UDim2.fromOffset(28, 28),
+            Size = UDim2.fromOffset(24, 24),
             Text = "",
             ZIndex = 2,
             Parent = SearchContainer,
@@ -6618,7 +6624,7 @@ function Library:CreateWindow(WindowInfo)
                 ImageRectOffset = SearchIcon.ImageRectOffset,
                 ImageRectSize = SearchIcon.ImageRectSize,
                 Position = UDim2.fromScale(0.5, 0.5),
-                Size = UDim2.fromOffset(20, 20),
+                Size = UDim2.fromOffset(16, 16),
                 Parent = SearchIconButton,
             })
         end
@@ -6629,7 +6635,7 @@ function Library:CreateWindow(WindowInfo)
             BackgroundColor3 = "MainColor",
             PlaceholderText = "Search...",
             Position = UDim2.fromScale(1, 0.5),
-            Size = UDim2.fromOffset(0, 40),
+            Size = UDim2.fromOffset(0, 32),
             Text = "",
             TextScaled = true,
             TextXAlignment = Enum.TextXAlignment.Left,
@@ -6667,7 +6673,7 @@ function Library:CreateWindow(WindowInfo)
             SearchIconButton.Visible = false
             
             local tween = TweenService:Create(SearchBox, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {
-                Size = UDim2.fromOffset(250, 40)
+                Size = UDim2.fromOffset(180, 32)
             })
             tween:Play()
             
@@ -6686,7 +6692,7 @@ function Library:CreateWindow(WindowInfo)
             Library:UpdateSearch("")
             
             local tween = TweenService:Create(SearchBox, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {
-                Size = UDim2.fromOffset(0, 40)
+                Size = UDim2.fromOffset(0, 32)
             })
             tween:Play()
             
@@ -7746,6 +7752,86 @@ function Library:CreateWindow(WindowInfo)
         else
             LockButton.Button.Position = UDim2.fromOffset(6, 46)
         end
+    end
+
+    --// Background Controls \\--
+    function Window:AddBackgroundControls(SettingsTab)
+        -- Use existing settings tab or create one if not provided
+        local TargetTab = SettingsTab or Window:AddTab("Settings", "settings")
+        
+        -- Add background section
+        local BackgroundSection = TargetTab:AddLeftGroupbox("Background Settings", "image")
+        
+        -- Background Image Dropdown
+        local BackgroundDropdown = BackgroundSection:AddDropdown({
+            Text = "Background Image",
+            Values = {"None", "Legacy", "Hearts", "Abstract", "Hexagon", "Circles", "Lace With Flowers", "Floral", "Halloween", "Christmas"},
+            Default = 1,
+            Callback = function(Selected)
+                local ImageMap = {
+                    ["None"] = "",
+                    ["Legacy"] = "rbxassetid://2151741365",
+                    ["Hearts"] = "rbxassetid://6073763717",
+                    ["Abstract"] = "rbxassetid://6073743871",
+                    ["Hexagon"] = "rbxassetid://6073628839",
+                    ["Circles"] = "rbxassetid://6071579801",
+                    ["Lace With Flowers"] = "rbxassetid://6071575925",
+                    ["Floral"] = "rbxassetid://5553946656",
+                    ["Halloween"] = "rbxassetid://11113209821",
+                    ["Christmas"] = "rbxassetid://11711560928",
+                }
+                
+                if Selected and Selected[1] then
+                    local SelectedName = BackgroundDropdown.Values[Selected[1]]
+                    local ImageUrl = ImageMap[SelectedName]
+                    if ImageUrl then
+                        Window.BackgroundImageLabel.Image = ImageUrl
+                    end
+                end
+            end
+        })
+        
+        -- Background Transparency Slider
+        local TransparencySlider = BackgroundSection:AddSlider({
+            Text = "Transparency",
+            Default = 75,
+            Min = 0,
+            Max = 100,
+            Callback = function(Value)
+                Window.BackgroundImageLabel.ImageTransparency = Value / 100
+            end
+        })
+        
+        -- Tile Size Slider
+        local TileSizeSlider = BackgroundSection:AddSlider({
+            Text = "Tile Size",
+            Default = 100,
+            Min = 50,
+            Max = 200,
+            Callback = function(Value)
+                Window.BackgroundImageLabel.TileSize = UDim2.fromOffset(Value, Value)
+            end
+        })
+        
+        -- Custom Image Input
+        local CustomImageInput = BackgroundSection:AddInput({
+            Text = "Custom Image ID",
+            Placeholder = "Enter rbxassetid://",
+            Callback = function(Value)
+                if Value and Value ~= "" then
+                    Window.BackgroundImageLabel.Image = Value
+                end
+            end
+        })
+        
+        return {
+            Tab = TargetTab,
+            Section = BackgroundSection,
+            Dropdown = BackgroundDropdown,
+            TransparencySlider = TransparencySlider,
+            TileSizeSlider = TileSizeSlider,
+            CustomImageInput = CustomImageInput
+        }
     end
 
     --// Execution \\--
