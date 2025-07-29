@@ -7773,11 +7773,21 @@ function Library:CreateWindow(WindowInfo)
         -- Add background section
         local BackgroundSection = TargetTab:AddLeftGroupbox("Background Settings", "image")
         
+        -- Background Toggle
+        local BackgroundToggle = BackgroundSection:AddToggle({
+            Text = "Enable Background",
+            Default = true,
+            Callback = function(Value)
+                if Window.BackgroundImageLabel then
+                    Window.BackgroundImageLabel.Visible = Value
+                end
+            end
+        })
+        
         -- Background Image Dropdown
         local BackgroundDropdown = BackgroundSection:AddDropdown({
             Text = "Background Image",
             Values = {"None", "Legacy", "Hearts", "Abstract", "Hexagon", "Circles", "Lace With Flowers", "Floral", "Halloween", "Christmas"},
-            Default = 1,
             Callback = function(Selected)
                 local ImageMap = {
                     ["None"] = "",
@@ -7832,6 +7842,7 @@ function Library:CreateWindow(WindowInfo)
         local CustomImageInput = BackgroundSection:AddInput({
             Text = "Custom Image ID",
             Placeholder = "Enter rbxassetid://",
+            Default = "",
             Callback = function(Value)
                 if Value and Value ~= "" and Window.BackgroundImageLabel then
                     Window.BackgroundImageLabel.Image = Value
@@ -7842,6 +7853,7 @@ function Library:CreateWindow(WindowInfo)
         return {
             Tab = TargetTab,
             Section = BackgroundSection,
+            Toggle = BackgroundToggle,
             Dropdown = BackgroundDropdown,
             TransparencySlider = TransparencySlider,
             TileSizeSlider = TileSizeSlider,
