@@ -6443,10 +6443,11 @@ function Library:CreateWindow(WindowInfo)
                     Position = UDim2.fromOffset(0, 48),
                     Size = UDim2.new(1, 0, 0, 1),
                 },
-                {
-                    Position = UDim2.fromScale(0.3, 0),
-                    Size = UDim2.new(0, 1, 1, -21),
-                },
+                -- Removed vertical divider between sidebar and content
+                -- {
+                --     Position = UDim2.fromScale(0.3, 0),
+                --     Size = UDim2.new(0, 1, 1, -21),
+                -- },
                 {
                     AnchorPoint = Vector2.new(0, 1),
                     Position = UDim2.new(0, 0, 1, -20),
@@ -6795,13 +6796,13 @@ function Library:CreateWindow(WindowInfo)
             end,
             Name = "Container",
             Position = UDim2.new(1, 0, 0, 49),
-            Size = UDim2.new(0.7, -1, 1, -70),
+            Size = UDim2.new(0.7, 0, 1, -70),
             Parent = MainFrame,
         })
 
         New("UIPadding", {
             PaddingBottom = UDim.new(0, 0),
-            PaddingLeft = UDim.new(0, 6),
+            PaddingLeft = UDim.new(0, 2),
             PaddingRight = UDim.new(0, 6),
             PaddingTop = UDim.new(0, 0),
             Parent = Container,
@@ -6898,7 +6899,7 @@ function Library:CreateWindow(WindowInfo)
                 Parent = TabContainer,
             })
             New("UIListLayout", {
-                Padding = UDim.new(0, 6),
+                Padding = UDim.new(0, 2),
                 Parent = TabLeft,
             })
             do
@@ -6927,7 +6928,7 @@ function Library:CreateWindow(WindowInfo)
                 Parent = TabContainer,
             })
             New("UIListLayout", {
-                Padding = UDim.new(0, 6),
+                Padding = UDim.new(0, 2),
                 Parent = TabRight,
             })
             do
