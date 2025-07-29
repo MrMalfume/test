@@ -6572,7 +6572,7 @@ function Library:CreateWindow(WindowInfo)
             Parent = CurrentTabInfo,
         })
 
-        -- Create animated search container
+        -- Create search container for animation
         local SearchContainer = New("Frame", {
             BackgroundTransparency = 1,
             Size = UDim2.fromScale(1, 1),
@@ -6580,29 +6580,29 @@ function Library:CreateWindow(WindowInfo)
             Parent = RightWrapper,
         })
 
-        -- Create search icon button (visible by default)
+        -- Create animated search icon button
         local SearchIconButton = New("TextButton", {
             AnchorPoint = Vector2.new(1, 0.5),
             BackgroundColor3 = "MainColor",
             Position = UDim2.fromScale(1, 0.5),
             Size = UDim2.fromOffset(40, 40),
             Text = "",
+            ZIndex = 2,
             Parent = SearchContainer,
         })
         New("UICorner", {
-            CornerRadius = UDim.new(0, WindowInfo.CornerRadius * 2),
+            CornerRadius = UDim.new(0, WindowInfo.CornerRadius),
             Parent = SearchIconButton,
         })
         New("UIStroke", {
             Color = "OutlineColor",
-            Thickness = 1,
             Parent = SearchIconButton,
         })
 
+        -- Add search icon to button
         local SearchIcon = Library:GetIcon("search")
-        local SearchIconImage
         if SearchIcon then
-            SearchIconImage = New("ImageLabel", {
+            New("ImageLabel", {
                 AnchorPoint = Vector2.new(0.5, 0.5),
                 BackgroundTransparency = 1,
                 Image = SearchIcon.Url,
@@ -6615,53 +6615,40 @@ function Library:CreateWindow(WindowInfo)
             })
         end
 
-        -- Create the animated search box (hidden by default)
+        -- Create the search textbox (hidden initially)
         SearchBox = New("TextBox", {
             AnchorPoint = Vector2.new(1, 0.5),
             BackgroundColor3 = "MainColor",
             PlaceholderText = "Search...",
             Position = UDim2.fromScale(1, 0.5),
-            Size = UDim2.fromOffset(0, 40), -- Start with 0 width
+            Size = UDim2.fromOffset(0, 40),
             Text = "",
             TextScaled = true,
             TextXAlignment = Enum.TextXAlignment.Left,
             Visible = false,
+            ZIndex = 1,
             Parent = SearchContainer,
         })
         New("UICorner", {
-            CornerRadius = UDim.new(0, WindowInfo.CornerRadius * 2),
+            CornerRadius = UDim.new(0, WindowInfo.CornerRadius),
             Parent = SearchBox,
         })
         New("UIPadding", {
             PaddingBottom = UDim.new(0, 8),
             PaddingLeft = UDim.new(0, 12),
-            PaddingRight = UDim.new(0, 45), -- Extra padding for close button
+            PaddingRight = UDim.new(0, 8),
             PaddingTop = UDim.new(0, 8),
             Parent = SearchBox,
         })
         New("UIStroke", {
             Color = "OutlineColor",
-            Thickness = 1,
             Parent = SearchBox,
         })
 
-        -- Create close button for search box
-        local SearchCloseButton = New("TextButton", {
-            AnchorPoint = Vector2.new(1, 0.5),
-            BackgroundTransparency = 1,
-            Position = UDim2.fromScale(1, 0.5),
-            Size = UDim2.fromOffset(30, 30),
-            Text = "×",
-            TextColor3 = "FontColor",
-            TextScaled = true,
-            Parent = SearchBox,
-        })
-
-        -- Animation states
+        -- Animation variables
         local SearchExpanded = false
-        local AnimationTweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
 
-        -- Function to expand search box
+        -- Expand search function
         local function ExpandSearch()
             if SearchExpanded then return end
             SearchExpanded = true
@@ -6669,19 +6656,17 @@ function Library:CreateWindow(WindowInfo)
             SearchBox.Visible = true
             SearchIconButton.Visible = false
             
-            -- Animate search box expansion
-            local expandTween = TweenService:Create(SearchBox, AnimationTweenInfo, {
+            local tween = TweenService:Create(SearchBox, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {
                 Size = UDim2.fromOffset(250, 40)
             })
-            expandTween:Play()
+            tween:Play()
             
-            -- Focus the search box after animation
-            expandTween.Completed:Connect(function()
+            tween.Completed:Connect(function()
                 SearchBox:CaptureFocus()
             end)
         end
 
-        -- Function to collapse search box
+        -- Collapse search function
         local function CollapseSearch()
             if not SearchExpanded then return end
             SearchExpanded = false
@@ -6690,83 +6675,22 @@ function Library:CreateWindow(WindowInfo)
             SearchBox.Text = ""
             Library:UpdateSearch("")
             
-            -- Animate search box collapse
-            local collapseTween = TweenService:Create(SearchBox, AnimationTweenInfo, {
+            local tween = TweenService:Create(SearchBox, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {
                 Size = UDim2.fromOffset(0, 40)
             })
-            collapseTween:Play()
+            tween:Play()
             
-            -- Hide search box and show icon after animation
-            collapseTween.Completed:Connect(function()
+            tween.Completed:Connect(function()
                 SearchBox.Visible = false
                 SearchIconButton.Visible = true
             end)
         end
 
-        -- Add hover effects to search icon
-        SearchIconButton.MouseEnter:Connect(function()
-            if not SearchExpanded then
-                local hoverTween = TweenService:Create(SearchIconButton, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {
-                    Size = UDim2.fromOffset(44, 44),
-                    BackgroundColor3 = Library.Scheme.AccentColor
-                })
-                hoverTween:Play()
-                
-                if SearchIconImage then
-                    local iconTween = TweenService:Create(SearchIconImage, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {
-                        ImageColor3 = Library.Scheme.White,
-                        Size = UDim2.fromOffset(22, 22)
-                    })
-                    iconTween:Play()
-                end
-            end
-        end)
-        
-        SearchIconButton.MouseLeave:Connect(function()
-            if not SearchExpanded then
-                local unhoverTween = TweenService:Create(SearchIconButton, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {
-                    Size = UDim2.fromOffset(40, 40),
-                    BackgroundColor3 = Library.Scheme.MainColor
-                })
-                unhoverTween:Play()
-                
-                if SearchIconImage then
-                    local iconTween = TweenService:Create(SearchIconImage, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {
-                        ImageColor3 = Library.Scheme.FontColor,
-                        Size = UDim2.fromOffset(20, 20)
-                    })
-                    iconTween:Play()
-                end
-            end
-        end)
-
-        -- Connect search icon button
+        -- Connect events
         SearchIconButton.MouseButton1Click:Connect(ExpandSearch)
         
-        -- Connect close button
-        SearchCloseButton.MouseButton1Click:Connect(CollapseSearch)
-        
-        -- Add hover effect to close button
-        SearchCloseButton.MouseEnter:Connect(function()
-            local hoverTween = TweenService:Create(SearchCloseButton, TweenInfo.new(0.15, Enum.EasingStyle.Quad), {
-                TextColor3 = Library.Scheme.AccentColor,
-                Size = UDim2.fromOffset(35, 35)
-            })
-            hoverTween:Play()
-        end)
-        
-        SearchCloseButton.MouseLeave:Connect(function()
-            local unhoverTween = TweenService:Create(SearchCloseButton, TweenInfo.new(0.15, Enum.EasingStyle.Quad), {
-                TextColor3 = Library.Scheme.FontColor,
-                Size = UDim2.fromOffset(30, 30)
-            })
-            unhoverTween:Play()
-        end)
-        
-        -- Auto-collapse when search box loses focus (with delay to allow for close button click)
         SearchBox.FocusLost:Connect(function()
-            task.wait(0.1) -- Small delay to allow close button to work
-            if SearchExpanded and SearchBox.Text == "" then
+            if SearchBox.Text == "" then
                 CollapseSearch()
             end
         end)
