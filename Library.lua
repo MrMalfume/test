@@ -1183,7 +1183,7 @@ do
     NotificationArea = New("Frame", {
         AnchorPoint = Vector2.new(1, 0),
         BackgroundTransparency = 1,
-        Position = UDim2.new(1, -6, 0, 6),
+        Position = UDim2.new(1, -10, 0.5, 0),
         Size = UDim2.new(0, 300, 1, -6),
         Parent = ScreenGui,
     })
