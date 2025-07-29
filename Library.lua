@@ -6654,15 +6654,7 @@ function Library:CreateWindow(WindowInfo)
             Parent = SearchBox,
         })
 
-        -- Set text colors directly to avoid theme system conflicts
-        SearchIconButton.TextColor3 = Library.Scheme.FontColor
-        SearchBox.TextColor3 = Library.Scheme.FontColor
-        
-        -- Register with theme system for proper color updates
-        Library.Registry[SearchIconButton] = Library.Registry[SearchIconButton] or {}
-        Library.Registry[SearchIconButton].TextColor3 = "FontColor"
-        Library.Registry[SearchBox] = Library.Registry[SearchBox] or {}
-        Library.Registry[SearchBox].TextColor3 = "FontColor"
+        -- TextColor3 is now automatically handled by the New() function
 
         -- Animation variables
         local SearchExpanded = false
@@ -6714,20 +6706,7 @@ function Library:CreateWindow(WindowInfo)
             end
         end)
 
-        local MoveIcon = Library:GetIcon("move")
-        if MoveIcon then
-            New("ImageLabel", {
-                AnchorPoint = Vector2.new(1, 0.5),
-                Image = MoveIcon.Url,
-                ImageColor3 = "OutlineColor",
-                ImageRectOffset = MoveIcon.ImageRectOffset,
-                ImageRectSize = MoveIcon.ImageRectSize,
-                Position = UDim2.new(1, -10, 0.5, 0),
-                Size = UDim2.fromOffset(28, 28),
-                SizeConstraint = Enum.SizeConstraint.RelativeYY,
-                Parent = TopBar,
-            })
-        end
+
 
         --// Bottom Bar \\--
         local BottomBar = New("Frame", {
