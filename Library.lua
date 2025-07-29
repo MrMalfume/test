@@ -7401,17 +7401,17 @@ function Library:CreateWindow(WindowInfo)
             end
         end
 
-        -- Create curved indicator for active tab
+        -- Create curved indicator for active tab (pill-shaped)
         local CurvedIndicator = New("Frame", {
             AnchorPoint = Vector2.new(0, 0.5),
             BackgroundColor3 = "AccentColor",
-            Position = UDim2.new(0, 8, 0.5, 0),
-            Size = UDim2.new(0, 6, 0, 20),
+            Position = UDim2.new(0, 6, 0.5, 0),
+            Size = UDim2.new(0, 4, 0, 28),
             Visible = false,
             Parent = TabButton,
         })
         New("UICorner", {
-            CornerRadius = UDim.new(1, 0),
+            CornerRadius = UDim.new(0, 14),
             Parent = CurvedIndicator,
         })
 
@@ -7423,8 +7423,8 @@ function Library:CreateWindow(WindowInfo)
             -- Show curved indicator
             CurvedIndicator.Visible = true
             TweenService:Create(CurvedIndicator, Library.TweenInfo, {
-                Size = UDim2.new(0, 6, 0, 20),
-                Position = UDim2.new(0, 8, 0.5, 0),
+                Size = UDim2.new(0, 4, 0, 28),
+                Position = UDim2.new(0, 6, 0.5, 0),
             }):Play()
             
             TweenService:Create(TabButton, Library.TweenInfo, {
@@ -7454,8 +7454,8 @@ function Library:CreateWindow(WindowInfo)
         function Tab:Hide()
             -- Hide curved indicator
             TweenService:Create(CurvedIndicator, Library.TweenInfo, {
-                Size = UDim2.new(0, 0, 0, 20),
-                Position = UDim2.new(0, 8, 0.5, 0),
+                Size = UDim2.new(0, 0, 0, 28),
+                Position = UDim2.new(0, 6, 0.5, 0),
             }):Play()
             
             TweenService:Create(TabButton, Library.TweenInfo, {
