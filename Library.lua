@@ -6581,19 +6581,20 @@ function Library:CreateWindow(WindowInfo)
             Parent = CurrentTabInfo,
         })
 
-        -- Create search container for animation
+        -- Create search container for animation on TopBar (where move icon was)
         local SearchContainer = New("Frame", {
             BackgroundTransparency = 1,
-            Size = UDim2.fromScale(1, 1),
+            Position = UDim2.new(1, -50, 0, 0),
+            Size = UDim2.new(0, 300, 1, 0),
             Visible = not (WindowInfo.DisableSearch or false),
-            Parent = RightWrapper,
+            Parent = TopBar,
         })
 
         -- Create animated search icon button
         local SearchIconButton = New("TextButton", {
             AnchorPoint = Vector2.new(1, 0.5),
             BackgroundColor3 = "MainColor",
-            Position = UDim2.fromScale(1, 0.5),
+            Position = UDim2.new(1, -10, 0.5, 0),
             Size = UDim2.fromOffset(40, 40),
             Text = "",
             ZIndex = 2,
