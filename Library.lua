@@ -215,14 +215,12 @@ local Templates = {
         BorderSizePixel = 0,
         FontFace = "Font",
         RichText = true,
-        TextColor3 = "FontColor",
     },
     TextButton = {
         AutoButtonColor = false,
         BorderSizePixel = 0,
         FontFace = "Font",
         RichText = true,
-        TextColor3 = "FontColor",
     },
     TextBox = {
         BorderSizePixel = 0,
@@ -232,7 +230,6 @@ local Templates = {
             return Color3.fromHSV(H, S, V / 2)
         end,
         Text = "",
-        TextColor3 = "FontColor",
     },
     UIListLayout = {
         SortOrder = Enum.SortOrder.LayoutOrder,
@@ -1063,6 +1060,14 @@ local function New(ClassName: string, Properties: { [string]: any }): any
         FillInstance(Templates[ClassName], Instance)
     end
     FillInstance(Properties, Instance)
+
+    -- Auto-set TextColor3 for text elements if not explicitly set
+    if (ClassName == "TextLabel" or ClassName == "TextButton" or ClassName == "TextBox") and not Properties["TextColor3"] then
+        Instance.TextColor3 = Library.Scheme.FontColor
+        -- Register for theme updates
+        Library.Registry[Instance] = Library.Registry[Instance] or {}
+        Library.Registry[Instance].TextColor3 = "FontColor"
+    end
 
     if Properties["Parent"] and not Properties["ZIndex"] then
         pcall(function()
@@ -5290,13 +5295,17 @@ do
             Position = UDim2.new(0, 12, 0, 1),
             Size = UDim2.new(1, -20, 0, 25),
             Text = Preview.Text,
-            TextColor3 = "FontColor",
             TextSize = 14,
             TextTransparency = 0.1,
             TextXAlignment = Enum.TextXAlignment.Left,
             FontFace = "Font",
             Parent = Holder,
         })
+        
+        -- Set TextColor3 directly to avoid string assignment error
+        TitleLabel.TextColor3 = Library.Scheme.FontColor
+        Library.Registry[TitleLabel] = Library.Registry[TitleLabel] or {}
+        Library.Registry[TitleLabel].TextColor3 = "FontColor"
 
         local TitleLine = New("Frame", {
             AnchorPoint = Vector2.new(0.5, 0),
