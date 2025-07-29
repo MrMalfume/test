@@ -6714,7 +6714,7 @@ function Library:CreateWindow(WindowInfo)
                 
                 if SearchIconImage then
                     local iconTween = TweenService:Create(SearchIconImage, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {
-                        ImageColor3 = Color3.new(1, 1, 1),
+                        ImageColor3 = Library.Scheme.White,
                         Size = UDim2.fromOffset(22, 22)
                     })
                     iconTween:Play()
