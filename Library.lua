@@ -1378,6 +1378,7 @@ function Library:MakeLine(Frame: GuiObject, Info)
     local Line = New("Frame", {
         AnchorPoint = Info.AnchorPoint or Vector2.zero,
         BackgroundColor3 = "OutlineColor",
+        BackgroundTransparency = Info.BackgroundTransparency or 0,
         Position = Info.Position,
         Size = Info.Size,
         Parent = Frame,
@@ -6442,15 +6443,18 @@ function Library:CreateWindow(WindowInfo)
                 {
                     Position = UDim2.fromOffset(0, 48),
                     Size = UDim2.new(1, 0, 0, 1),
+                    BackgroundTransparency = 1,
                 },
                 {
                     Position = UDim2.fromScale(0.25, 0),
                     Size = UDim2.new(0, 1, 0, 48),
+                    BackgroundTransparency = 1,
                 },
                 {
                     AnchorPoint = Vector2.new(0, 1),
                     Position = UDim2.new(0, 0, 1, -20),
                     Size = UDim2.new(1, 0, 0, 1),
+                    BackgroundTransparency = 1,
                 },
             }
             for _, Info in pairs(Lines) do
