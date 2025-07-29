@@ -6445,7 +6445,7 @@ function Library:CreateWindow(WindowInfo)
                 },
                 {
                     Position = UDim2.fromScale(0.25, 0),
-                    Size = UDim2.new(0, 1, 1, -21),
+                    Size = UDim2.new(0, 1, 0, 48),
                 },
                 {
                     AnchorPoint = Vector2.new(0, 1),
@@ -6848,11 +6848,6 @@ function Library:CreateWindow(WindowInfo)
                 Size = UDim2.new(1, 0, 0, 40),
                 Text = "",
                 Parent = Tabs,
-            })
-
-            New("UICorner", {
-                CornerRadius = UDim.new(0, 8),
-                Parent = TabButton,
             })
 
             New("UIPadding", {
@@ -7488,12 +7483,6 @@ function Library:CreateWindow(WindowInfo)
                 Text = "",
                 Parent = Tabs,
             })
-
-            New("UICorner", {
-                CornerRadius = UDim.new(0, 8),
-                Parent = TabButton,
-            })
-
             New("UIPadding", {
                 PaddingBottom = UDim.new(0, 11),
                 PaddingLeft = UDim.new(0, 12),
