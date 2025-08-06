@@ -6404,7 +6404,7 @@ function Library:CreateWindow(WindowInfo)
     local MainFrame
     local SearchBox
     local CurrentTabInfo
-    local CurrentTabLabel
+
     local CurrentTabDescription
     local ResizeButton
     local Tabs
@@ -6554,16 +6554,6 @@ function Library:CreateWindow(WindowInfo)
             PaddingLeft = UDim.new(0, 8),
             PaddingRight = UDim.new(0, 8),
             PaddingTop = UDim.new(0, 8),
-            Parent = CurrentTabInfo,
-        })
-
-        CurrentTabLabel = New("TextLabel", {
-            BackgroundTransparency = 1,
-            Size = UDim2.fromScale(1, 0),
-            AutomaticSize = Enum.AutomaticSize.Y,
-            Text = "",
-            TextSize = 14,
-            TextXAlignment = Enum.TextXAlignment.Left,
             Parent = CurrentTabInfo,
         })
 
@@ -6826,7 +6816,6 @@ function Library:CreateWindow(WindowInfo)
         end
 
         local TabButton: TextButton
-        local TabLabel
         local TabIcon
 
         local TabContainer
@@ -7404,7 +7393,7 @@ function Library:CreateWindow(WindowInfo)
             if Description then
                 CurrentTabInfo.Visible = true
                 SearchBox.Size = UDim2.fromScale(0.5, 1)
-                CurrentTabLabel.Text = Name
+
                 CurrentTabDescription.Text = Description
             end
 
@@ -7451,7 +7440,6 @@ function Library:CreateWindow(WindowInfo)
 
     function Window:AddKeyTab(Name)
         local TabButton: TextButton
-        local TabLabel
         local TabIcon
 
         local TabContainer
